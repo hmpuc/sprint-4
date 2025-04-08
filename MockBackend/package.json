@@ -1,0 +1,15 @@
+{
+  "name": "desafiocreatus",
+  "version": "1.0.0",
+  "description": "## 📜 Sobre o Projeto",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "mock": "json-server --watch db.json --port 3000"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "json-server": "^1.0.0-beta.3"
+  }
+}
