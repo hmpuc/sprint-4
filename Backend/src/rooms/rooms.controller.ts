@@ -11,5 +11,5 @@ export class UserController {
         return this.userService.create(user);
     }
 
-    
+
 }
