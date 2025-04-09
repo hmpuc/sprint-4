@@ -1,0 +1,14 @@
+Git: 
+    Commit: git commit -m "Sua mensagem de commit"
+    Push: git push
+
+Nest:
+    Iniciar: npm run start
+
+Prisma: 
+    Gerar: npx prisma generate
+    Migrar: npx prisma migrate dev
+
+Docker: 
+    Compose: docker compose up -d
+
