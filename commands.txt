@@ -1,5 +1,5 @@
 Git: 
-    Commit: git commit -m "Sua mensagem de commit"
+    Commit: git commit -m "Commit"
     Push: git push
 
 Nest:
