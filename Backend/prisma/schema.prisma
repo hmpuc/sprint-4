@@ -10,12 +10,12 @@ datasource db {
 model User {
   id          Int @id @default(autoincrement())
   name        String 
-  email       String
+  email       String @unique
   password    String
   level       Int 
-  profile_img String
-  createdAt   DateTime
-  deletedAt   DateTime
+  profile_img String?
+  createdAt   DateTime @default(now())
+  deletedAt   DateTime?
 }
 
 model Room {
