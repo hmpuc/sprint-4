@@ -29,11 +29,4 @@ export class RoomsController {
     async delete(@Param('id', ParseIntPipe) id: number) {
         return this.roomsService.delete(id);
     }
-
-    // @Patch('room/:id') 
-
-    // async updateLevel(@Param('id', ParseIntPipe) id: number, @Body() updateLevelDto: UpdateLevelDto) {
-    //     console.log(updateLevelDto)
-    //     return this.roomsService.updateLevel(id, updateLevelDto.level);
-    // }
 }
