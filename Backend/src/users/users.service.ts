@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { Prisma, User } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class UserService {
+    level: number;
     constructor(private prisma: PrismaService) {}
 
     create(user: Prisma.UserCreateInput) {

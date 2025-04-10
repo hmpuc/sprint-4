@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Patch, Delete, Param, Body, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Param, Body, ParseIntPipe, Put } from '@nestjs/common';
 import { UserService } from './users.service';
 import { Prisma, User } from '@prisma/client';
 
@@ -24,7 +24,7 @@ export class UserController {
         return this.usersService.findOne(id);
     }
 
-    @Patch(':id') 
+    @Put(':id') 
     async update(@Param('id', ParseIntPipe) id: number, @Body() user: Prisma.UserUpdateInput) {
         return this.usersService.update(id, user);
     }
