@@ -35,3 +35,9 @@ model Logs {
   status    String
   createdAt DateTime
 }
+
+enum Role{
+  CommonUser
+  IntermediateUser
+  ADMIN
+}
