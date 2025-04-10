@@ -1,42 +1,40 @@
-import { Controller, Get, Post, Patch, Delete, Param, Body, ParseIntPipe, Put } from '@nestjs/common';
-import { UserService } from './users.service';
-import { Prisma, User } from '@prisma/client';
-
-interface UpdateLevelDto {
-    level: number;
-    }
+import { Body, Controller, Post, Get, Param, ParseIntPipe, Patch, Delete, UsePipes, ValidationPipe } from '@nestjs/common';
+import { UsersService } from './users.service';
+import { CreateUser, UpdateUser, VerifyLevel } from './users.dto'
 
 @Controller('users')
-export class UserController {
-    constructor(private readonly usersService: UserService) {}
-    @Post()
-    async create(@Body() user: Prisma.UserCreateInput) {
-        return this.usersService.create(user);
-    }
+export class UsersController {
+  constructor(private readonly usersService: UsersService) {}
 
-    @Get()
-    async findAll() {
-        return this.usersService.findAll()
-    }
+  @Post()
+  @UsePipes(new ValidationPipe())
+  async create(@Body() user: CreateUser) {
+    return this.usersService.create(user);
+  }
 
-    @Get(':id')
-    async findOne(@Param('id', ParseIntPipe) id: number) {
-        return this.usersService.findOne(id);
-    }
+  @Get()
+  async findAll() {
+    return this.usersService.findAll()
+  }
 
-    @Put(':id') 
-    async update(@Param('id', ParseIntPipe) id: number, @Body() user: Prisma.UserUpdateInput) {
-        return this.usersService.update(id, user);
-    }
+  @Get(':id')
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    console.log(id)
+    return this.usersService.findOne(id);
+  }
 
-    @Delete(':id')
-    async delete(@Param('id', ParseIntPipe) id: number) {
-        return this.usersService.delete(id);
-    }
+  @Patch(':id') 
+  async update(@Param('id', ParseIntPipe) id: number, @Body() user: UpdateUser) {
+    return this.usersService.update(id, user);
+  }
 
-    @Patch(':id/level') 
-    async updateLevel(@Param('id', ParseIntPipe) id: number, @Body() updateLevelDto: UpdateLevelDto) {
-        console.log(updateLevelDto)
-        return this.usersService.updateLevel(id, updateLevelDto.level);
-    }
+  @Delete(':id')
+  async delete(@Param('id', ParseIntPipe) id: number) {
+    return this.usersService.delete(id);
+  }
+
+  @Patch(':id/level') 
+  async updateLevel(@Param('id', ParseIntPipe) id: number, @Body() updateLevelDto: VerifyLevel) {
+    return this.usersService.updateLevel(id, updateLevelDto.level);
+  }
 }
