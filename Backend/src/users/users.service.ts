@@ -7,6 +7,13 @@ export class UsersService {
   constructor(private prisma: PrismaService) {}
   
   async create(user)  {
+    const checkEmpty = await this.prisma.user.findUnique({
+      where: {
+        email: user.email
+      }
+    })
+    if (checkEmpty) throw new HttpException("Já existe um usuário com esse email!", HttpStatus.BAD_REQUEST);
+
     const hashPassword = await bcrypt.hash(user.password, 10);
 
     return this.prisma.user.create({ 
@@ -21,16 +28,28 @@ export class UsersService {
     return this.prisma.user.findMany();
   }
 
-  findOne(id) {
-    return this.prisma.user.findUnique({ 
+  async findOne(id) {
+    const user = await this.prisma.user.findUnique({ 
       where: {
         id: id
       }
     })
+    if (!user) throw new HttpException("Não existe um usuário com esse id!", HttpStatus.NOT_FOUND);
+
+    return user;
   }
 
   async update(id, user) {
+    
     if (!user.name && !user.email && !user.password && !user.level && !user.profile_img) throw new HttpException("Precisa conter pelo menos uma informção!", HttpStatus.BAD_REQUEST)
+    
+    const userDb = await this.prisma.user.findUnique({ 
+      where: {
+        id: id
+      }
+    })
+    if (!userDb) throw new HttpException("Não existe um usuário com esse id!", HttpStatus.NOT_FOUND);
+    
     if (user.password) {
 
       const hashPassword = await bcrypt.hash(user.password, 10);
@@ -53,7 +72,15 @@ export class UsersService {
     }
   }
 
-  delete(id) {
+  async delete(id) {
+
+    const user = await this.prisma.user.findUnique({ 
+      where: {
+        id: id
+      }
+    })
+    if (!user) throw new HttpException("Não existe um usuário com esse id!", HttpStatus.NOT_FOUND);
+
     return this.prisma.user.delete({
       where: {
         id: id
@@ -61,7 +88,15 @@ export class UsersService {
     })
   }
 
-  updateLevel(id, level) {
+  async updateLevel(id, level) {
+
+    const user = await this.prisma.user.findUnique({ 
+      where: {
+        id: id
+      }
+    })
+    if (!user) throw new HttpException("Não existe um usuário com esse id!", HttpStatus.NOT_FOUND);
+
     return this.prisma.user.update({ 
       where: {
         id: id
@@ -70,11 +105,5 @@ export class UsersService {
         level: level
       }
     })
-  }
-
-  async findByEmail(email: string){
-    return this.prisma.user.findUnique({
-      where: { email },
-    });
   }
 }
