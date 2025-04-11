@@ -5,29 +5,32 @@ import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
-    constructor(
-        private usersService: UsersService,
-        private jwtService: JwtService,
-    ){}
+  constructor(
+    private usersService: UsersService,
+    private jwtService: JwtService,
+  ) {}
 
-    async validateUser(email: string, senha: string){
-        const user = await this.usersService.findByEmail(email);
-        if (!user){
-            throw new UnauthorizedException('Usuário não encontrado');
-        }
-
-        const senhaValida = await bcrypt.compare(senha, user.password);
-        if(!senhaValida){
-            throw new UnauthorizedException('Senha inválida')
-        }
-
-        return user
+  //verifica se o usuario existe e se a senha esta correta
+  async validateUser(email: string, senha: string) {
+    const user = await this.usersService.findByEmail(email);
+    if (!user) {
+      throw new UnauthorizedException('Usuário não encontrado');
     }
 
-    async login (user: any){
-        const payload = { sub: user.id, email: user.email };
-        return {
-            access_token: this.jwtService.sign(payload),
-        };
+    const senhaValida = await bcrypt.compare(senha, user.password);
+    if (!senhaValida) {
+      throw new UnauthorizedException('Senha inválida');
     }
+
+   
+    return user;
+  }
+
+  // gera token
+  async login(user: any) {
+    const payload = { sub: user.id, email: user.email };
+    return {
+      access_token: this.jwtService.sign(payload),
+    };
+  }
 }
