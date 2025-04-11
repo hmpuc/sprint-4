@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { Prisma} from '@prisma/client';
 
@@ -8,22 +8,32 @@ export class RoomsService {
 
 
     create(room: Prisma.RoomCreateInput) {
+        if (!room.acessLevel || !room.description) throw new HttpException("Precisa conter todas as informações", HttpStatus.BAD_REQUEST)
         return this.prisma.room.create({ data: room });
+        
     }
 
     findAll() {
         return this.prisma.room.findMany();
     }
 
-    findOne(id: number) {
-        return this.prisma.room.findUnique({ 
+    async findOne(id: number) {
+        const room = await this.prisma.room.findUnique({ 
         where: {
             id: id
         }
         })
+        if(!room) throw new HttpException("A sala não existe", HttpStatus.NOT_FOUND)
+        return this.prisma.room.findUnique({
+        where: {
+            id: id
+        }
+        })
+        
     }
 
-    update(id: number, room: Prisma.RoomUpdateInput) {
+    async update(id: number, room: Prisma.RoomUpdateInput) {
+        if (!room.acessLevel && !room.description) throw new HttpException("Precisa conter pelo menos uma informção!", HttpStatus.BAD_REQUEST)
         return this.prisma.room.update({ 
         where: {
             id: id
@@ -32,11 +42,17 @@ export class RoomsService {
         })
     }
 
-    delete(id: number) {
-        return this.prisma.room.delete({
-        where: {
-            id: id
-        }
+    async delete(id: number) {
+        const room = await this.prisma.room.findUnique({ 
+            where: {
+                id: id
+            }
+            })
+            if(!room) throw new HttpException("A sala não existe", HttpStatus.NOT_FOUND)
+            return this.prisma.room.delete({
+            where: {
+                id: id
+            }
         })
     }
 

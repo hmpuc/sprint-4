@@ -1,12 +1,12 @@
-import { Controller, Get, Post, Patch, Delete, Param, Body, ParseIntPipe, Put} from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Param, Body, ParseIntPipe} from '@nestjs/common';
 import { RoomsService } from './rooms.service';
-import { Prisma} from '@prisma/client';
+import { CreateRoom, UpdateRoom} from './rooms.dto'
 
 @Controller()
 export class RoomsController {
     constructor(private readonly roomsService: RoomsService) {}
     @Post('room')
-    async create(@Body() room: Prisma.RoomCreateInput) {
+    async create(@Body() room: CreateRoom) {
         return this.roomsService.create(room);
     }
 
@@ -20,9 +20,9 @@ export class RoomsController {
         return this.roomsService.findOne(id);
     }
 
-    @Put('room/:id') 
-    async update(@Param('id', ParseIntPipe) id: number, @Body() user: Prisma.RoomUpdateInput) {
-        return this.roomsService.update(id, user);
+    @Patch('room/:id') 
+    async update(@Param('id', ParseIntPipe) id: number, @Body() room: UpdateRoom) {
+        return this.roomsService.update(id, room);
     }
 
     @Delete('room/:id')
