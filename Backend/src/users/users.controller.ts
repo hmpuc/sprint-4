@@ -1,7 +1,11 @@
-import { Body, Controller, Post, Get, Param, ParseIntPipe, Patch, Delete, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Post, Get, Param, ParseIntPipe, Patch, Delete, UsePipes, ValidationPipe, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUser, UpdateUser, VerifyLevel } from './users.dto'
+import { Roles } from '../roles/roles.decorator';
+import { RolesGuard } from '../roles/roles.guard';
+import { Role } from '../roles/roles.enum';
 
+@UseGuards()
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -13,11 +17,13 @@ export class UsersController {
   }
 
   @Get()
+  @Roles(Role.Admin, Role.CommonUser, Role.IntermediateUser)
   async findAll() {
     return this.usersService.findAll()
   }
 
   @Get(':id')
+  @Roles(Role.Admin, Role.CommonUser, Role.IntermediateUser)
   async findOne(@Param('id', ParseIntPipe) id: number) {
     console.log(id)
     return this.usersService.findOne(id);
