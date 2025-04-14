@@ -25,7 +25,7 @@ export class AuthService {
             throw new HttpException('Senha incorreta', HttpStatus.FORBIDDEN);
         }
         
-        const payload = { sub: user.id, username: user.name };
+        const payload = { sub: user.id, username: user.name, role: user.level };
         return {
           access_token: await this.jwtService.signAsync(payload),
         };

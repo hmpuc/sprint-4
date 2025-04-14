@@ -1,3 +1,4 @@
+
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Role } from './roles.enum';
@@ -13,6 +14,7 @@ canActivate(context: ExecutionContext): boolean {
     }
     const request = context.switchToHttp().getRequest();
     const user = request.user;
-    return roles.some((role) => user?.roles?.includes(role));
+
+    return roles.includes(user.level); // Check if user has the required role
     }
 }
