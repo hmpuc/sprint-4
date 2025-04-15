@@ -1,4 +1,5 @@
-import { IsInt, IsOptional, IsString, MaxLength, MinLength, Min, Max, IsNumber } from "class-validator";
+import { Transform } from "class-transformer";
+import { IsInt, IsOptional, IsString, MaxLength, MinLength, Min, Max, IsNumber, IsNumberString } from "class-validator";
 
 export class CreateRoom{
     @IsString()
@@ -7,9 +8,9 @@ export class CreateRoom{
     description: string
 
     @IsInt()
-    @IsNumber()
-    @Min(1)
+    @Transform(({ value }) => Number(value))
     @Max(5)
+    @Min(1)
     acessLevel: number
 }
 
@@ -20,10 +21,10 @@ export class UpdateRoom{
     @MaxLength(400)
     description: string
 
-    @IsInt()
-    @IsNumber()
     @IsOptional()
-    @Min(1)
+    @IsInt()
+    @Transform(({ value }) => Number(value))
     @Max(5)
+    @Min(1)
     acessLevel: number
 }
