@@ -12,7 +12,7 @@ model User {
   name        String 
   email       String @unique
   password    String
-  level       Int
+  level       Int @default(1)
   profile_img String?
   createdAt   DateTime @default(now())
   deletedAt   DateTime?
@@ -36,8 +36,3 @@ model Logs {
   createdAt DateTime
 }
 
-enum Role{
-  CommonUser
-  IntermediateUser
-  ADMIN
-}
