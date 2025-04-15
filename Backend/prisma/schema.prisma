@@ -36,8 +36,3 @@ model Logs {
   createdAt DateTime
 }
 
-enum Role{
-  CommonUser
-  IntermediateUser
-  ADMIN
-}
