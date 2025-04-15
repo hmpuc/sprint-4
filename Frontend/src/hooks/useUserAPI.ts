@@ -92,9 +92,14 @@ const useUserAPI = () => {
 
   const getUsers = async () => {
     setError(null);
+    const token = localStorage.getItem('token'); // Pega o token
 
     try {
-      const response = await fetch(`${BASE_URL}/users`);
+      const response = await fetch(`${BASE_URL}/users`, {
+        headers: {
+          'Authorization': `Bearer ${token}`, // Coloca o token
+        },
+      });
 
       if (!response.ok) {
         throw new Error("Erro ao buscar usuários");
@@ -132,7 +137,7 @@ const useUserAPI = () => {
   const getUsersPDF = async () => {
     setError(null);
     try {
-      const response = await fetch(`${BASE_URL}/pdf-report`);
+      const response = await fetch(`${BASE_URL}/report`);
 
       if (!response.ok) {
         throw new Error("Erro ao buscar o relatório");
@@ -146,7 +151,7 @@ const useUserAPI = () => {
       // Criar um link de download
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "relatorio.pdf");
+      link.setAttribute("download", "relatorio.csv");
 
       // Simular clique no link para iniciar o download
       document.body.appendChild(link);

@@ -19,7 +19,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ login }) => {
   const handleLogin = async () => {
     const data = await postLogin({ email, password });
     if (!data) return;
-    login(data.token);
+    login(data.access_token);
     nav("/user-list");
   };
 
