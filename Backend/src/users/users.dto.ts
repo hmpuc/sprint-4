@@ -1,4 +1,4 @@
-import { IsEmail, IsInt, IsOptional, IsString, MaxLength, MinLength, Min, Max, IsNumber, IsNumberString } from "class-validator";
+import { IsEmail, IsInt, IsOptional, IsString, MaxLength, MinLength, Min, Max } from "class-validator";
 
 export class CreateUser {
     @IsString()

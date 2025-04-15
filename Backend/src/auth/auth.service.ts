@@ -11,7 +11,6 @@ export class AuthService {
       ) {}
     
       async signIn(email: string, pass: string): Promise<{ access_token: string }> {
-        console.log('oi')
         const user = await this.prismaService.user.findUnique({
             where: {
                 email: email
