@@ -33,6 +33,6 @@ model Logs {
   room      Room  @relation(fields: [roomId], references: [id])
   roomName  Int
   status    String
-  createdAt DateTime
+  createdAt DateTime @default(now())
 }
 
