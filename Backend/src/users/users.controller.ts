@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Get, Param, ParseIntPipe, Patch, Delete, UsePipes, ValidationPipe, UseGuards, SetMetadata } from '@nestjs/common';
+import { Body, Controller, Post, Get, Param, ParseIntPipe, Patch, Delete, UsePipes, ValidationPipe, UseGuards, SetMetadata, Put } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUser, UpdateUser, VerifyLevel } from './users.dto'
 import { Roles } from '../roles/roles.decorator';
@@ -26,11 +26,10 @@ export class UsersController {
   
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: number) {
-    console.log(id)
     return this.usersService.findOne(id);
   }
 
-  @Patch(':id') 
+  @Put(':id') 
   @Roles(Role.Admin)
   async update(@Param('id', ParseIntPipe) id: number, @Body() user: UpdateUser) {
     return this.usersService.update(id, user);

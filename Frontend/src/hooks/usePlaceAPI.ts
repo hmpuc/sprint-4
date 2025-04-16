@@ -15,9 +15,14 @@ const usePlaceAPI = () => {
 
   const getPlaces = async () => {
     setError(null);
+    const token = localStorage.getItem('token');
 
     try {
-      const response = await fetch(`${BASE_URL}/places`);
+      const response = await fetch(`${BASE_URL}/places`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        }
+      });
 
       if (!response.ok) {
         throw new Error("Erro ao buscar locais");
@@ -34,12 +39,14 @@ const usePlaceAPI = () => {
 
   const createPlace = async (place: PlaceNoId) => {
     setError(null);
+    const token = localStorage.getItem('token');
 
     try {
       const response = await fetch(`${BASE_URL}/places`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify(place),
       });
@@ -59,12 +66,14 @@ const usePlaceAPI = () => {
 
   const editPlace = async (place: Place) => {
     setError(null);
+    const token = localStorage.getItem('token');
 
     try {
       const response = await fetch(`${BASE_URL}/places/${place.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify(place),
       });
@@ -84,10 +93,14 @@ const usePlaceAPI = () => {
 
   const deletePlace = async (id: string) => {
     setError(null);
+    const token = localStorage.getItem('token');
 
     try {
       const response = await fetch(`${BASE_URL}/places/${id}`, {
         method: "DELETE",
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        }
       });
 
       if (!response.ok) {

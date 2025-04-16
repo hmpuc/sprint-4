@@ -1,31 +1,31 @@
-import { Controller, Get, Post, Patch, Delete, Param, Body, ParseIntPipe} from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Param, Body, ParseIntPipe, UsePipes, ValidationPipe, Put} from '@nestjs/common';
 import { RoomsService } from './rooms.service';
 import { CreateRoom, UpdateRoom} from './rooms.dto'
 
-@Controller()
+@Controller('places')
 export class RoomsController {
     constructor(private readonly roomsService: RoomsService) {}
-    @Post('room')
+    @Post('')
     async create(@Body() room: CreateRoom) {
         return this.roomsService.create(room);
     }
 
-    @Get('rooms')
+    @Get('')
     async findAll() {
         return this.roomsService.findAll()
     }
 
-    @Get('room/:id')
+    @Get(':id')
     async findOne(@Param('id', ParseIntPipe) id: number) {
         return this.roomsService.findOne(id);
     }
 
-    @Patch('room/:id') 
+    @Put(':id') 
     async update(@Param('id', ParseIntPipe) id: number, @Body() room: UpdateRoom) {
         return this.roomsService.update(id, room);
     }
 
-    @Delete('room/:id')
+    @Delete(':id')
     async delete(@Param('id', ParseIntPipe) id: number) {
         return this.roomsService.delete(id);
     }
