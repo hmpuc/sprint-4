@@ -34,7 +34,9 @@ export class AppService {
 
   async generateBadge(id: number) {
     const user = await this.prisma.user.findUnique({
-      where: { id },
+      where: {
+        id: id
+      }
     });
 
     if (!user) {
@@ -60,7 +62,8 @@ export class AppService {
 
     badge.end();
 
-    return { message: 'PDF gerado com sucesso', path: outputPath };
+    const fileStream = createReadStream(outputPath);
+    return fileStream;
   }
 }
 

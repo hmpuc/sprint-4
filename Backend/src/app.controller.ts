@@ -13,9 +13,10 @@ export class AppController {
 
     await pipeline(fileStream, res);
   }
-  @Post("badge/:id")
-  async generateBadge(@Param('id', ParseIntPipe) id: number){
-    return this.appService.generateBadge(id);
+  @Get("badge/:id")
+  async generateBadge(@Param('id', ParseIntPipe) id: number, @Res({passthrough: true}) res: Response){
+    const fileStream = await this.appService.generateBadge(id);
 
+    await pipeline(fileStream, res);
   }
 }
