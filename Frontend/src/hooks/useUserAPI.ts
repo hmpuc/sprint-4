@@ -40,12 +40,14 @@ const useUserAPI = () => {
 
   const createUser = async (body: NewUser) => {
     setError(null);
+    const token = localStorage.getItem('token');
 
     try {
       const response = await fetch(`${BASE_URL}/users`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify(body),
       });
@@ -65,6 +67,7 @@ const useUserAPI = () => {
 
   const editUser = async (body: User) => {
     setError(null);
+    const token = localStorage.getItem('token');
     // create new body without id;
     const { id, ...newBody } = body;
 
@@ -73,6 +76,7 @@ const useUserAPI = () => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify(newBody),
       });
@@ -116,10 +120,14 @@ const useUserAPI = () => {
 
   const deleteUser = async (id: string | number) => {
     setError(null);
+    const token = localStorage.getItem('token');
 
     try {
       const response = await fetch(`${BASE_URL}/users/${id}`, {
         method: "DELETE",
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        }
       });
 
       if (!response.ok) {
@@ -136,8 +144,14 @@ const useUserAPI = () => {
 
   const getUsersPDF = async () => {
     setError(null);
+    const token = localStorage.getItem('token');
+
     try {
-      const response = await fetch(`${BASE_URL}/report`);
+      const response = await fetch(`${BASE_URL}/report`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        }
+      });
 
       if (!response.ok) {
         throw new Error("Erro ao buscar o relatório");
@@ -179,9 +193,14 @@ const useUserAPI = () => {
 
   const getBadgeByUserId = async (id: string) => {
     setError(null);
+    const token = localStorage.getItem('token');
 
     try {
-      const response = await fetch(`${BASE_URL}/badge/${id}`);
+      const response = await fetch(`${BASE_URL}/badge/${id}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        }
+      });
 
       if (!response.ok) {
         throw new Error("Erro ao buscar badge");
@@ -198,9 +217,14 @@ const useUserAPI = () => {
 
   const getUserById = async (id: string) => {
     setError(null);
+    const token = localStorage.getItem('token');
 
     try {
-      const response = await fetch(`${BASE_URL}/users/${id}`);
+      const response = await fetch(`${BASE_URL}/users/${id}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        }
+      });
 
       if (!response.ok) {
         throw new Error("Erro ao buscar usuário");
