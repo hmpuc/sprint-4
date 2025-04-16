@@ -9,7 +9,7 @@ export class AuthService {
         private jwtService: JwtService,
         private prismaService: PrismaService
       ) {}
-    
+      
       async signIn(email: string, pass: string): Promise<{ access_token: string }> {
         const user = await this.prismaService.user.findUnique({
             where: {
@@ -20,7 +20,7 @@ export class AuthService {
             throw new HttpException('Nenhum usuário encontrado', HttpStatus.BAD_REQUEST);
         }
         const compare = await bcrypt.compare(pass, user.password)
-
+        
         if (!compare) {
             throw new HttpException('Senha incorreta', HttpStatus.FORBIDDEN);
         }

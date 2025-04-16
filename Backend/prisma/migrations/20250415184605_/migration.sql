@@ -4,8 +4,10 @@ CREATE TABLE "User" (
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
-    "level" INTEGER NOT NULL,
-    "profile_img" TEXT NOT NULL,
+    "level" INTEGER NOT NULL DEFAULT 1,
+    "profile_img" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "deletedAt" TIMESTAMP(3),
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -27,7 +29,7 @@ CREATE TABLE "Logs" (
     "roomId" INTEGER NOT NULL,
     "roomName" INTEGER NOT NULL,
     "status" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Logs_pkey" PRIMARY KEY ("id")
 );

@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import * as bcrypt from 'bcrypt';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class UsersService {
@@ -13,9 +14,9 @@ export class UsersService {
       }
     })
     if (checkEmpty) throw new HttpException("Já existe um usuário com esse email!", HttpStatus.BAD_REQUEST);
-
+    
     const hashPassword = await bcrypt.hash(user.password, 10);
-
+    
     return this.prisma.user.create({ 
       data: {
         ...user,
@@ -72,7 +73,7 @@ export class UsersService {
     }
   }
 
-  async delete(id) {
+  async delete(id: number) {
 
     const user = await this.prisma.user.findUnique({ 
       where: {
@@ -88,7 +89,7 @@ export class UsersService {
     })
   }
 
-  async updateLevel(id, level) {
+  async updateLevel(id: number, level: number) {
 
     const user = await this.prisma.user.findUnique({ 
       where: {
