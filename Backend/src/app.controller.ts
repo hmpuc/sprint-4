@@ -1,4 +1,4 @@
-import { Controller, Get, Res } from '@nestjs/common';
+import { Controller, Get, Param, Res , Post, ParseIntPipe} from '@nestjs/common';
 import { AppService } from './app.service';
 import { pipeline } from 'stream/promises';
 import { Response } from 'express';
@@ -12,5 +12,10 @@ export class AppController {
     const fileStream = await this.appService.getUserCsv();
 
     await pipeline(fileStream, res);
+  }
+  @Post("badge/:id")
+  async generateBadge(@Param('id', ParseIntPipe) id: number){
+    return this.appService.generateBadge(id);
+
   }
 }
