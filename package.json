@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "@nestjs/common": "^11.0.20",
+    "@prisma/client": "^6.6.0",
+    "csv-writer": "^1.6.0",
+    "express": "^5.1.0",
+    "fs": "^0.0.1-security",
+    "pdfkit": "^0.17.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.1"
+  }
+}
