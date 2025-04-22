@@ -24,9 +24,15 @@ const UsersTable: React.FC<UsersTablePRops> = ({
   })
   .then(response => response.blob())
   .then(blob => {
-      const blobUrl = URL.createObjectURL(blob);
-      window.open(blobUrl, '_blank');
-  });
+    const blobUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = blobUrl;
+    a.download = `badge_${id}.pdf`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a); 
+    URL.revokeObjectURL(blobUrl); 
+})
   };
 
   console.log("data", data);
