@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { ForbiddenException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { User } from '@prisma/client';
@@ -40,7 +40,7 @@ export class UsersService {
     return user;
   }
 
-  async update(id, user) {
+  async update(id, user, requestingUserId: number) {
     
     if (!user.name && !user.email && !user.password && !user.level && !user.profile_img) throw new HttpException("Precisa conter pelo menos uma informção!", HttpStatus.BAD_REQUEST)
     
@@ -49,6 +49,12 @@ export class UsersService {
         id: id
       }
     })
+
+    if (requestingUserId !== id) {
+      throw new ForbiddenException('You can only edit your own profile.');
+    }
+
+
     if (!userDb) throw new HttpException("Não existe um usuário com esse id!", HttpStatus.NOT_FOUND);
     
     if (user.password) {

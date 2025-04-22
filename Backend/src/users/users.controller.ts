@@ -1,10 +1,9 @@
-import { Body, Controller, Post, Get, Param, ParseIntPipe, Patch, Delete, UsePipes, ValidationPipe, UseGuards, SetMetadata, Put } from '@nestjs/common';
+import { Body, Controller, Post, Get, Param, ParseIntPipe, Patch, Delete, UsePipes, ValidationPipe, UseGuards, SetMetadata, Put, Req } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUser, UpdateUser, VerifyLevel } from './users.dto'
 import { Roles } from '../roles/roles.decorator';
 import { RolesGuard } from '../roles/roles.guard';
 import { Role } from '../roles/roles.enum';
-import { Public } from 'src/public.decorator';
 
 @UseGuards(RolesGuard)
 @Controller('users')
@@ -29,11 +28,16 @@ export class UsersController {
     return this.usersService.findOne(id);
   }
 
-  @Put(':id') 
-  @Roles(Role.Admin)
-  async update(@Param('id', ParseIntPipe) id: number, @Body() user: UpdateUser) {
-    return this.usersService.update(id, user);
-  }
+  @Put(':id')
+  @UseGuards(RolesGuard) // Guard ensures user can only update their own profile and checks role permissions
+  async update(
+  @Param('id', ParseIntPipe) id: number,
+  @Body() user: UpdateUser,
+  @Req() req: any, // Inject the current user's data (req.user)
+  ) {
+  return this.usersService.update(id, user, req.user.id, ); // Service checks ownership and role
+}
+
 
   @Delete(':id')
   @Roles(Role.Admin, Role.IntermediateUser4)

@@ -1,10 +1,15 @@
-import { Controller, Get, Post, Patch, Delete, Param, Body, ParseIntPipe, UsePipes, ValidationPipe, Put} from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Param, Body, ParseIntPipe, UsePipes, ValidationPipe, Put, UseGuards} from '@nestjs/common';
 import { RoomsService } from './rooms.service';
 import { CreateRoom, UpdateRoom} from './rooms.dto'
+import { Roles } from 'src/roles/roles.decorator';
+import { Role } from 'src/roles/roles.enum';
 
+@UseGuards()
 @Controller('places')
 export class RoomsController {
     constructor(private readonly roomsService: RoomsService) {}
+
+    @Roles(Role.Admin)
     @Post('')
     async create(@Body() room: CreateRoom) {
         return this.roomsService.create(room);

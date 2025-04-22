@@ -6,7 +6,7 @@ import { JwtService } from '@nestjs/jwt';
 export class RolesGuard implements CanActivate {
     constructor(
     private readonly jwtService: JwtService,
-    private readonly reflector: Reflector 
+    private readonly reflector: Reflector, 
     ) {}
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -17,18 +17,15 @@ export class RolesGuard implements CanActivate {
             if (isPublic) {
             return true;
             }
-        console.log('RolesGuard!');
 
-        const request = context.switchToHttp().getRequest();
+        const request = context.switchToHttp().getRequest();    
         const authHeader = request.headers.authorization;
-        console.log('Headers recebidos!');
 
         if (!authHeader) {
             throw new UnauthorizedException('Authorization header faltando');
         }
             
         const [type, token] = authHeader.split(' ');
-        console.log('Token: recebido');
 
         if (type !== 'Bearer' || !token) {
             throw new UnauthorizedException('Formato de token invalido');
@@ -39,6 +36,10 @@ export class RolesGuard implements CanActivate {
             console.log('Payload recebido!');
             request.user = payload; // Attach user payload to the request object
             
+            const targetUserId = parseInt(request.params.id, 10);
+            if (request.user.id == targetUserId) {
+                return true;
+            }
             
       // Retrieve required roles from metadata
             const requiredRoles = this.reflector.get<string[]>('roles', context.getHandler());
@@ -53,6 +54,7 @@ export class RolesGuard implements CanActivate {
             if (!requiredRoles.some(role => userRoles.includes(role))) {
             throw new ForbiddenException('Acesso negado: permissões insuficientes');
             }
+            
             return true;
         }catch (error) {
             console.log("Token Error: ", error.message)
