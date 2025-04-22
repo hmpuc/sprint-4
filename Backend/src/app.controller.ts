@@ -1,7 +1,8 @@
-import { Controller, Get, Param, Res , Post, ParseIntPipe} from '@nestjs/common';
+import { Controller, Get, Param, Res, ParseIntPipe, Header} from '@nestjs/common';
 import { AppService } from './app.service';
 import { pipeline } from 'stream/promises';
 import { Response } from 'express';
+import { Public } from './public.decorator';
 
 @Controller()
 export class AppController {
@@ -15,12 +16,6 @@ export class AppController {
   }
   @Get("badge/:id")
   async generateBadge(@Param('id', ParseIntPipe) id: number, @Res({passthrough: true}) res: Response){
-    const fileStream = await this.appService.generateBadge(id);
-
-    return res.json()
-  }
-  @Get('badge/get/:id')
-  async getBadge(@Param('id', ParseIntPipe) id: number, @Res({passthrough: true}) res: Response) {
     const fileStream = await this.appService.generateBadge(id);
 
     await pipeline(fileStream, res);
