@@ -14,9 +14,19 @@ const UsersTable: React.FC<UsersTablePRops> = ({
   onUserEdit,
   onUserDelete,
 }) => {
-  const handleBadgeClick = (url: string) => {
-    console.log(url);
-    window.open(url, "_blank");
+  const handleBadgeClick = (id: string) => {
+    const token = localStorage.getItem('token');
+    const url = `http://localhost:3000/badge/${id}`;
+    fetch(url, {
+      headers: {
+          'Authorization': `Bearer ${token}`
+      }
+  })
+  .then(response => response.blob())
+  .then(blob => {
+      const blobUrl = URL.createObjectURL(blob);
+      window.open(blobUrl, '_blank');
+  });
   };
 
   console.log("data", data);
@@ -52,7 +62,7 @@ const UsersTable: React.FC<UsersTablePRops> = ({
           <span className="flex">
             <FaIdCard
               className="text-primary text-2xl mx-2 hover:cursor-pointer"
-              onClick={() => handleBadgeClick(user.badge_url)}
+              onClick={() => handleBadgeClick(user.id)}
             />
             <MdOutlineModeEdit
               onClick={() => onUserEdit(user)}
