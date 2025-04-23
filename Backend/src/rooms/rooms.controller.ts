@@ -9,8 +9,9 @@ import { Roles } from 'src/roles/roles.decorator';
 export class RoomsController {
     constructor(private readonly roomsService: RoomsService) {}
 
-    @Roles(Role.Admin)
+    
     @Post('')
+    @Roles(Role.Admin)
     async create(@Body() room: CreateRoom) {
         return this.roomsService.create(room);
     }
@@ -25,14 +26,15 @@ export class RoomsController {
         return this.roomsService.findOne(id);
     }
 
-    @Roles(Role.Admin, Role.IntermediateUser4)
+    
     @Put(':id') 
+    @Roles(Role.Admin, Role.IntermediateUser4)
     async update(@Param('id', ParseIntPipe) id: number, @Body() room: UpdateRoom) {
         return this.roomsService.update(id, room);
     }
 
-    @Roles(Role.Admin)
     @Delete(':id')
+    @Roles(Role.Admin)
     async delete(@Param('id', ParseIntPipe) id: number) {
         return this.roomsService.delete(id);
     }
